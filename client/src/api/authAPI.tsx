@@ -16,6 +16,7 @@ const login = async (userInfo: UserLogin) => {
     });
   // Check if the response is ok
     if (!response.ok) {
+      // If the response is not ok, handle the error
       const errorData = await response.json();
       if (errorData && errorData.message) {
         throw new Error(`Error: ${errorData.message}`);
@@ -26,8 +27,9 @@ const login = async (userInfo: UserLogin) => {
     const data = await response.json();
     return data;
   } catch (error) {
+    // Handle any errors that occur during the fetch
     console.error("Error during user login:", error);
-// Handle the error
+
     return Promise.reject('Could not fetch user information');
   }
 };

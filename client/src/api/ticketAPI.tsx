@@ -6,67 +6,120 @@ import Auth from '../utils/auth';
 
 // This function is used to retrieve all tickets
 const retrieveTickets = async () => {
+
+  // Check if the API URL is defined
   try {
+
     const response = await fetch(
       '/api/tickets/',
+
       {
+
+        // method: 'GET',
         headers: {
+
           'Content-Type': 'application/json',
+
+          //'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
           Authorization: `Bearer ${Auth.getToken()}`
+
         }
+
       }
+
     );
+
     // Check if the response is ok
     const data = await response.json();
 
+
     if (!response.ok) {
+
+      // If the response is not ok, handle the error
       throw new Error('invalid API response, check network tab!');
+
     }
 
+    // Parse the response data
     return data;
+
   } catch (err) {
+
+    // Handle any errors that occur during the fetch
     console.log('Error from data retrieval: ', err);
+
+    // Return an empty array if there was an error
     return [];
+
   }
+
 };
 
 // This function is used to retrieve a single ticket by its ID
 const retrieveTicket = async (id: number | null): Promise<TicketData> => {
+
+
   try {
+
     // Check if the API URL is defined
     const response = await fetch(
       `/api/tickets/${id}`,
       {
+        // method: 'GET',
         headers: {
+
+          // 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
           'Content-Type': 'application/json',
+
           Authorization: `Bearer ${Auth.getToken()}`
+
         }
+
       }
+
     );
 
     // Check if the response is ok
     const data = await response.json();
 
+    // If the response is not ok, handle the error
     if (!response.ok) {
+
       throw new Error('Invalid API response, check network tab!');
+
     }
+    // Parse the response data
     return data;
+
   } catch (err) {
+
     // Handle the error
     console.log('Error from data retrieval: ', err);
+
+    // Return an empty object if there was an error
     return Promise.reject('Could not fetch singular ticket');
   }
 }
 // This function is used to create a new ticket
 const createTicket = async (body: TicketData) => {
+
   try {
+    // Check if the API URL is defined
     const response = await fetch(
+
       '/api/tickets/', {
+
+      // method: 'POST',
       method: 'POST',
+
       headers: {
+
         'Content-Type': 'application/json',
         Authorization: `Bearer ${Auth.getToken()}`
+
       },
+
+      // Send the ticket data in the request body
       body: JSON.stringify(body)
     }
 

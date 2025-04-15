@@ -12,3 +12,4 @@ server/dist/
 # Environment variables
 server/.env
 client/.env
+.vscode/settings.json
