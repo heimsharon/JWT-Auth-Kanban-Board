@@ -16,7 +16,7 @@ const requiredEnvVars = [
 ];
 
 // Check if all required environment variables are set
-  requiredEnvVars.forEach((envVar) => {
+requiredEnvVars.forEach((envVar) => {
   if (!process.env[envVar]) {
     console.error(`Error: Missing environment variable ${envVar}`);
     process.exit(1); // Exit the process with an error code
@@ -33,14 +33,14 @@ app.use(express.json());
 app.use(routes);
 
 sequelize.
-sync({ force: false })
-.then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
+  sync({ force: false })
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is listening on port ${PORT}`);
+    });
+  })
+  // Handle 404 errors
+  .catch((err: Error) => {
+    console.error('Error connecting to the database:', err.message);
+    process.exit(1); // Exit the process with an error code
   });
-})
-// Handle 404 errors
-.catch((err: Error) => {
-  console.error('Error connecting to the database:', err.message);
-  process.exit(1); // Exit the process with an error code
-});
