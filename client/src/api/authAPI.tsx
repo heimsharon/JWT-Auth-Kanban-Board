@@ -2,9 +2,11 @@
 // This file is used to make API calls related to authentication
 
 import { UserLogin } from "../interfaces/UserLogin";
+import { UserData } from "../interfaces/UserData"; // Import UserData
 
 // This function is used to log in a user
-const login = async (userInfo: UserLogin): Promise<{ token: string; user: any }> => {
+const login = async (userInfo: UserLogin): Promise<{ token: string; user: UserData }> => {
+
   try {
     // Make the API call to log in the user
     const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/auth/login`, {
@@ -23,7 +25,7 @@ const login = async (userInfo: UserLogin): Promise<{ token: string; user: any }>
     }
 
     // Parse and return the response data
-    const data = await response.json();
+    const data: { token: string; user: UserData } = await response.json(); // Use UserData type
     return data;
   } catch (error) {
     // Log the error and reject the promise with a message
