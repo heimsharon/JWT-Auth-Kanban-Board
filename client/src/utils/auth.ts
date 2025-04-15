@@ -1,33 +1,52 @@
 // Path: client/src/utils/auth.ts
 // This file is used to handle authentication
-
-import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { jwtDecode,  JwtPayload } from 'jwt-decode';
 
 class AuthService {
+  // Get the user's profile by decoding the token
   getProfile() {
-    // TODO: return the decoded token
+    const token = this.getToken();
+    if (!token) {
+      return null;
+    }
+    const decodedToken = jwtDecode<JwtPayload>(token);
+    const { exp } = decodedToken;
+    const currentTime = Date.now() / 1000; // Convert to seconds
+    if (exp && exp < currentTime) {
+      return null; // Token is expired
+    }
+    return decodedToken; // Return the decoded token
   }
 
+  // Check if the user is logged in
   loggedIn() {
-    // TODO: return a value that indicates if the user is logged in
+    const token = this.getToken();
+    return !!token && !this.isTokenExpired(token); // Check if token exists and is not expired
   }
-  
+
+  // Check if the token is expired
   isTokenExpired(token: string) {
-    // TODO: return a value that indicates if the token is expired
+    const decodedToken = jwtDecode<JwtPayload>(token);
+    const { exp } = decodedToken;
+    const currentTime = Date.now() / 1000; // Convert to seconds
+    return !!exp && exp < currentTime; // Return true if expired, false otherwise
   }
 
+  // Get the token from localStorage
   getToken(): string {
-    // TODO: return the token
+    return localStorage.getItem('id_token') || ''; // Return the token or an empty string
   }
 
+  // Log the user in by storing the token and redirecting to the home page
   login(idToken: string) {
-    // TODO: set the token to localStorage
-    // TODO: redirect to the home page
+    localStorage.setItem('id_token', idToken); // Store the token in localStorage
+    window.location.assign('/'); // Redirect to the home page
   }
 
+  // Log the user out by removing the token
   logout() {
-    // TODO: remove the token from localStorage
-    // TODO: redirect to the login page
+    localStorage.removeItem('id_token'); // Remove the token from localStorage
+    window.location.assign('/'); // Redirect to the home page
   }
 }
 

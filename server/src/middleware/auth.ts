@@ -9,5 +9,21 @@ interface JwtPayload {
 }
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-  // TODO: verify the token exists and add the user data to the request object
+  // Middleware to authenticate JWT tokens
+
+  const token = req.headers[ 'authorization' ]?.split(' ')[ 1 ];
+  if (!token) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
+    if (err) {
+      return res.sendStatus(403); // Forbidden
+    }
+    req.user = user as JwtPayload;
+    return next();
+  });
+  return
 };
+
+

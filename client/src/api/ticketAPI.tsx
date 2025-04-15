@@ -1,6 +1,5 @@
 // Path: client/src/api/ticketAPI.tsx
 // This file is used to make API calls related to tickets
-
 import { TicketData } from '../interfaces/TicketData';
 import { ApiMessage } from '../interfaces/ApiMessage';
 import Auth from '../utils/auth';
