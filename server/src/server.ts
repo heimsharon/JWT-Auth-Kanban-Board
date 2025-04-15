@@ -1,14 +1,27 @@
 // Path: server/src/server.ts
 // This file is used to start the server and connect to the database
-
-const forceDatabaseRefresh = false;
-
-import dotenv from 'dotenv';
-dotenv.config();
-
 import express from 'express';
 import routes from './routes/index.js';
 import { sequelize } from './models/index.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const requiredEnvVars = [
+  'DB_HOST',
+  'DB_USER',
+  'DB_PASSWORD',
+  'DB_NAME',
+  'JWT_SECRET_KEY'
+];
+
+// Check if all required environment variables are set
+  requiredEnvVars.forEach((envVar) => {
+  if (!process.env[envVar]) {
+    console.error(`Error: Missing environment variable ${envVar}`);
+    process.exit(1); // Exit the process with an error code
+  }
+});
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -19,8 +32,15 @@ app.use(express.static('../client/dist'));
 app.use(express.json());
 app.use(routes);
 
-sequelize.sync({force: forceDatabaseRefresh}).then(() => {
+sequelize.
+sync({ force: false })
+.then(() => {
   app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
   });
+})
+// Handle 404 errors
+.catch((err: Error) => {
+  console.error('Error connecting to the database:', err.message);
+  process.exit(1); // Exit the process with an error code
 });

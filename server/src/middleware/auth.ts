@@ -8,22 +8,21 @@ interface JwtPayload {
   username: string;
 }
 
-export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-  // Middleware to authenticate JWT tokens
-
-  const token = req.headers[ 'authorization' ]?.split(' ')[ 1 ];
+export const authenticateToken = (req: Request, res: Response, next: NextFunction): void | Response => {
+  const token = req.headers['authorization']?.split(' ')[1];
   if (!token) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).json({ message: 'Authorization token is missing' });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
+  jwt.verify(token, process.env.JWT_SECRET_KEY as string, (err, user) => {
     if (err) {
-      return res.sendStatus(403); // Forbidden
+      return res.status(403).json({ message: 'Invalid or expired token' });
     }
     req.user = user as JwtPayload;
-    return next();
+    return next(); // Explicitly return after calling next()
   });
-  return
+
+  return; // Ensure the function always ends
 };
 
 
