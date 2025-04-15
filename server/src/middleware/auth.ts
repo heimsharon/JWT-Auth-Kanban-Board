@@ -29,4 +29,19 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
   return; // Ensure the function always ends
 };
 
+// Example function to generate tokens
+export const generateTokens = (username: string) => {
+  // Generate JWT token
+  const token = jwt.sign({ username }, process.env.JWT_SECRET_KEY as string, {
+    expiresIn: '15m', // Short-lived access token
+  });
+
+  // Generate a refresh token (optional)
+  const refreshToken = jwt.sign({ username }, process.env.JWT_SECRET_KEY as string, {
+    expiresIn: '7d', // Longer-lived refresh token
+  });
+
+  return { token, refreshToken };
+};
+
 

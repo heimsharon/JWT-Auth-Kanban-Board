@@ -13,6 +13,7 @@ interface UserAttributes {
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> { }
 
+// The User model is used to store the user information
 export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: number;
   public username!: string;
@@ -23,12 +24,19 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
 
   // Hash the password before saving the user
   public async setPassword(password: string) {
-    const saltRounds = 10;
+    const saltRounds = 12;
     this.password = await bcrypt.hash(password, saltRounds);
+  }
+
+  // Validate the password
+  public async validatePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
   }
 }
 
+// This function is used to create the User model
 export function UserFactory(sequelize: Sequelize): typeof User {
+
   User.init(
     {
       id: {
@@ -39,6 +47,7 @@ export function UserFactory(sequelize: Sequelize): typeof User {
       username: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       password: {
         type: DataTypes.STRING,
@@ -49,6 +58,7 @@ export function UserFactory(sequelize: Sequelize): typeof User {
       tableName: 'users',
       sequelize,
       hooks: {
+        // Hash the password before creating or updating the user
         beforeCreate: async (user: User) => {
           await user.setPassword(user.password);
         },

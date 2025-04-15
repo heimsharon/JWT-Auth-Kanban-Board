@@ -4,6 +4,12 @@
 import { Request, Response } from 'express';
 import { User } from '../models/user.js';
 
+// Validate password strength
+const isPasswordStrong = (password: string): boolean => {
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  return passwordRegex.test(password);
+};
+
 // GET /Users
 export const getAllUsers = async (_req: Request, res: Response) => {
   try {
@@ -37,6 +43,12 @@ export const getUserById = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   try {
+    if (!isPasswordStrong(password)) {
+      return res.status(400).json({
+        message: 'Password must be at least 8 characters long and include letters, numbers, and special characters.',
+      });
+    }
+
     const newUser = await User.create({ username, password });
     res.status(201).json(newUser);
   } catch (error: any) {
@@ -51,8 +63,16 @@ export const updateUser = async (req: Request, res: Response) => {
   try {
     const user = await User.findByPk(id);
     if (user) {
+      if (password && !isPasswordStrong(password)) {
+        return res.status(400).json({
+          message: 'Password must be at least 8 characters long and include letters, numbers, and special characters.',
+        });
+      }
+
       user.username = username;
-      user.password = password;
+      if (password) {
+        user.password = password;
+      }
       await user.save();
       res.json(user);
     } else {
