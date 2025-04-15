@@ -40,7 +40,7 @@ export const getUserById = async (req: Request, res: Response) => {
 };
 
 // POST /Users
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response): Promise<Response> => {
   const { username, password } = req.body;
   try {
     if (!isPasswordStrong(password)) {
@@ -50,14 +50,14 @@ export const createUser = async (req: Request, res: Response) => {
     }
 
     const newUser = await User.create({ username, password });
-    res.status(201).json(newUser);
+    return res.status(201).json(newUser);
   } catch (error: any) {
-    res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: error.message }); // Add a return statement here
   }
 };
 
 // PUT /Users/:id
-export const updateUser = async (req: Request, res: Response) => {
+export const updateUser = async (req: Request, res: Response): Promise<Response> => {
   const { id } = req.params;
   const { username, password } = req.body;
   try {
@@ -74,12 +74,12 @@ export const updateUser = async (req: Request, res: Response) => {
         user.password = password;
       }
       await user.save();
-      res.json(user);
+      return res.json(user);
     } else {
-      res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User not found' }); // Add a return statement here
     }
   } catch (error: any) {
-    res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: error.message }); // Add a return statement here
   }
 };
 
