@@ -15,13 +15,13 @@
 }
 
 /* webkit solution */
-::-webkit-input-placeholder { 
-  text-align:right; 
+::-webkit-input-placeholder {
+  text-align: right;
 }
 
 /* mozilla solution */
-input:-moz-placeholder { 
-  text-align:right; 
+input:-moz-placeholder {
+  text-align: right;
 }
 
 a {
@@ -29,12 +29,13 @@ a {
   color: #000000;
   text-decoration: inherit;
 }
+
 a:hover {
-  color: #535bf2;
+  color: #ead70c;
 }
 
 body {
-  background: #ECF0F1;
+  background: #98b6d7;
   background-size: cover;
   background-repeat: no-repeat no-repeat;
   background-position: center center;
@@ -56,13 +57,15 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #f606d2;
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -107,7 +110,10 @@ tbody tr:nth-child(odd) {
 }
 
 .nav-title a {
-  color: #b864c4;
+  color: #047747;
+  font-size: larger;
+  font-weight: 900;
+  text-decoration: none;
 }
 
 .nav-item {
@@ -142,14 +148,14 @@ tbody tr:nth-child(odd) {
   text-align: center;
   font-weight: 500;
   width: 33%;
-  height: 90vh; 
+  height: 90vh;
   border: 1px solid rgba(0, 0, 0, 0.2);
   margin: 5px;
   padding: 5px;
 }
 
 .todo {
-  background-color: #e9cbec;
+  background-color: #e1bae4;
 }
 
 .inprogress {
@@ -157,12 +163,12 @@ tbody tr:nth-child(odd) {
 }
 
 .done {
-  background-color: #732381;
+  background-color: #9c12b5;
 }
 
 .ticket-card {
   text-align: left;
-  background-color: #fff;
+  background-color: #c7c3c3;
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 4px;
@@ -193,22 +199,25 @@ tbody tr:nth-child(odd) {
   align-items: center;
 }
 
-.form > h1, .form > label {
+.form>h1,
+.form>label {
   color: yellow;
+  text-align: center;
 }
 
-.form > input {
+.form>input {
   width: 200px;
-  
+
 }
 
-.form > label {
+.form>label {
   margin-top: 2.5%;
   margin-bottom: 2.5%;
 }
 
 .form button {
   margin-top: 2.5%;
+  background-color: rgb(31, 159, 116);
 }
 
 .form textarea {
@@ -218,7 +227,7 @@ tbody tr:nth-child(odd) {
 }
 
 .editBtn {
-  background-color: #f9f9f9;
+  background-color: #18e1b2;
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -226,15 +235,19 @@ tbody tr:nth-child(odd) {
   transition: border-color 0.25s;
 }
 
+.editBtn:hover {
+  color: #eaee0e;
+}
+
 .deleteBtn {
-  background-color: #f9f9f9;
+  background-color: #e67e7ede;
   font-weight: 500;
   color: black;
   text-decoration: inherit;
 }
 
 .deleteBtn:hover {
-  color: #535bf2;
+  color: #fff706;
 }
 
 .login-notice {
@@ -250,9 +263,11 @@ tbody tr:nth-child(odd) {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
