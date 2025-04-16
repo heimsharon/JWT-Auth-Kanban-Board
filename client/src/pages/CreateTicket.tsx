@@ -7,6 +7,7 @@ import { createTicket } from '../api/ticketAPI';
 import { TicketData } from '../interfaces/TicketData';
 import { UserData } from '../interfaces/UserData';
 import { retrieveUsers } from '../api/userAPI';
+import ErrorMessage from "../components/ErrorMessage";
 
 const CreateTicket = () => {
   const [newTicket, setNewTicket] = useState<TicketData | undefined>(
@@ -23,6 +24,7 @@ const CreateTicket = () => {
   const navigate = useNavigate();
 
   const [users, setUsers] = useState<UserData[] | undefined>([]);
+  const [error, setError] = useState('');
 
   const getAllUsers = async () => {
     try {
@@ -39,12 +41,16 @@ const CreateTicket = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (newTicket) {
-      const data = await createTicket(newTicket);
-      console.log(data);
-      navigate('/');
+    try {
+      if (newTicket) {
+        const data = await createTicket(newTicket);
+        console.log(data);
+        navigate('/');
+      }
+    } catch (err) {
+      setError('Failed to create the ticket. Please try again.');
     }
-  }
+  };
 
   const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -64,8 +70,7 @@ const CreateTicket = () => {
   return (
     <>
       <div className='container'>
-        <form className='form' onSubmit=
-          {handleSubmit}>
+        <form className='form' onSubmit={handleSubmit}>
           <h1>Create Ticket</h1>
           <label htmlFor='tName'>Ticket Name</label>
           <textarea
@@ -114,7 +119,8 @@ const CreateTicket = () => {
             )
             }
           </select>
-          <button type='submit' onSubmit={handleSubmit}>Submit Form</button>
+          <ErrorMessage message={error} />
+          <button type='submit'>Submit Form</button>
         </form>
       </div>
     </>
