@@ -43,7 +43,7 @@ app.use(express.json());
 app.use(routes);
 
 // Handle React routes (fallback to index.html)
-app.get('*', (req, res) => {
+app.get('*', (_req, res) => { // Prefix 'req' with an underscore to indicate it's unused
   res.sendFile(path.resolve(__dirname, '../client/dist/index.html'));
 });
 
