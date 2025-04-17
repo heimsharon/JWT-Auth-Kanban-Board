@@ -1,24 +1,20 @@
 import { Sequelize } from 'sequelize';
 
-let sequelize: Sequelize;
+let sequelize;
 
 if (process.env.DB_URL) {
-  // Use the database URL from the environment variable in production
-  sequelize = new Sequelize(process.env.DB_URL, {
-    dialect: 'postgres',
-    logging: false, // Disable logging in production
-  });
+
+  sequelize = new Sequelize (process.env.DB_URL);
 } else {
-  // Use local database configuration in development
+
   sequelize = new Sequelize(
-    process.env.DB_NAME || 'kanban_board',
-    process.env.DB_USER || 'postgres',
-    process.env.DB_PW || 'password',
+    process.env.DB_NAME || 'default_db_name',
+    process.env.DB_USER || 'default_user',
+    process.env.DB_PW || 'default_password',
     {
-      host: process.env.DB_HOST || 'localhost',
+      host: 'localhost',
       dialect: 'postgres',
-      logging: console.log, // Enable logging in development
-    }
+    },
   );
 }
 
