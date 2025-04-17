@@ -3,10 +3,15 @@
 
 import express, { Request, Response } from 'express';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { Router } from 'express';
 import authRoutes from './auth-routes.js';
 import apiRoutes from './api/index.js';
 import { authenticateToken } from '../middleware/auth.js';
+
+// Define __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const router = Router();
 
@@ -18,11 +23,11 @@ export default router;
 const app = express();
 
 // Serve static files from the client build directory
-app.use(express.static(path.join(__dirname, '../client/dist')));
+app.use(express.static(path.join(__dirname, '../../client/dist')));
 
 // Fallback to index.html for SPA routing
 app.get('*', (_req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+    res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
 });
 
 // Start the server
