@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize';
 
+
 let sequelize: Sequelize;
 
 if (process.env.DATABASE_URL) {
